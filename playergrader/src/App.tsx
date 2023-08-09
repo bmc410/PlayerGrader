@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
 import { atom, useAtom, useSetAtom } from 'jotai';
 import { playerAtom, Player } from './models/playerstate';
@@ -9,6 +9,9 @@ import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
 import Tooltip from '@mui/material/Tooltip';
 import Box from '@mui/material/Box';
+import { SlideMenu } from 'primereact/slidemenu';
+import { Button } from 'primereact/button';
+import { Menu } from 'primereact/menu';
 
 // Import Swiper styles
 import 'swiper/css';
@@ -28,7 +31,12 @@ function App() {
   const [categories, setCategories] = useAtom(categoryAtom);
   const [activeSlideIndex, setActiveSlideIndex] = useAtom(activeSlideAtom); // Use the atom
   const [activeSwipeIndex, setActiveSwipeIndex] = useAtom(activeSwipeAtom); // Use the atom
-  
+
+  const menu = useRef<Menu>(null);
+  let items = [
+    { label: 'New', icon: 'pi pi-fw pi-plus' },
+    { label: 'Delete', icon: 'pi pi-fw pi-trash' }
+  ];
 
   const marks = [
     {
@@ -116,36 +124,45 @@ function App() {
 
   return (
     <div>
-      <Swiper
-        loop={true}
-        onSlideChange={handleSwiperSlideChange}
-      >
-        {players.map((player, index) => (
-          <SwiperSlide key={player.id} onClick={() => console.log(index)}>
-            <div style={{ paddingLeft: '20px' }} className="swiper-slide-content">
-              <p>{player.name}</p>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+
+      <div className='grid'>
+        <div className='col'>
+          <Menu model={items} popup ref={menu} />
+          <Button style={{ backgroundColor: 'gold', border: 0 }} label="Show" icon="pi pi-bars" onClick={(event) => menu?.current?.toggle(event)} />
+        </div>
+        <div  className='col'>
+        <Swiper
+          loop={true}
+          onSlideChange={handleSwiperSlideChange}
+        >
+          {players.map((player, index) => (
+            <SwiperSlide key={player.id} onClick={() => console.log(index)}>
+              <div style={{ paddingLeft: '20px' }} className="swiper-slide-content">
+                <p>{player.name}</p>
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
+
+      {
+    categories.map((category, index) => (
+      <div style={{ marginTop: '20px', padding: '20px' }}>
+        <Typography gutterBottom>{category.name}</Typography>
+        <Slider
+          defaultValue={5}
+          step={0.5}
+          min={0}
+          max={10}
+          valueLabelDisplay="auto"
+          marks={marks}
+        />
+      </div>
+    ))
+  }
 
 
-      {categories.map((category, index) => (
-           <div style={{ marginTop: '20px', padding: '20px' }}>
-           <Typography gutterBottom>{category.name}</Typography>
-           <Slider
-             defaultValue={5}
-             step={0.5}
-             min={0}
-             max={10}
-             valueLabelDisplay="auto"
-             marks={marks}
-           />
-         </div>
-      ))}
-
-
-      {/* <div style={{ marginTop: '20px', padding: '20px' }}>
+  {/* <div style={{ marginTop: '20px', padding: '20px' }}>
         <Typography gutterBottom>Passing</Typography>
         <Slider
           defaultValue={5}
@@ -168,7 +185,7 @@ function App() {
         />
       </div> */}
 
-    </div>
+    </div > </div >
 
   );
 }
