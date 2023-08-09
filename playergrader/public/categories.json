@@ -1,0 +1,12 @@
+{
+    "categories": [
+      { "id": 1, "name": "Passing" },
+      { "id": 2, "name": "Setting" },
+      { "id": 3, "name": "Hitting" },
+      { "id": 4, "name": "Blocking" },
+      { "id": 5, "name": "Serving" },
+      { "id": 6, "name": "Work-Ethic" },
+      { "id": 7, "name": "Teachability" },
+      { "id": 8, "name": "Camaraderie" }
+    ]
+  }

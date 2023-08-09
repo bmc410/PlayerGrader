@@ -1,128 +1,34 @@
-[
-    {
-      "id": 1,
-      "firstName": "Emma",
-      "lastName": "Johnson"
-    },
-    {
-      "id": 2,
-      "firstName": "Olivia",
-      "lastName": "Williams"
-    },
-    {
-      "id": 3,
-      "firstName": "Ava",
-      "lastName": "Smith"
-    },
-    {
-      "id": 4,
-      "firstName": "Sophia",
-      "lastName": "Brown"
-    },
-    {
-      "id": 5,
-      "firstName": "Isabella",
-      "lastName": "Jones"
-    },
-    {
-      "id": 6,
-      "firstName": "Mia",
-      "lastName": "Davis"
-    },
-    {
-      "id": 7,
-      "firstName": "Charlotte",
-      "lastName": "Miller"
-    },
-    {
-      "id": 8,
-      "firstName": "Amelia",
-      "lastName": "Wilson"
-    },
-    {
-      "id": 9,
-      "firstName": "Harper",
-      "lastName": "Martinez"
-    },
-    {
-      "id": 10,
-      "firstName": "Evelyn",
-      "lastName": "Anderson"
-    },
-    {
-      "id": 11,
-      "firstName": "Abigail",
-      "lastName": "Rodriguez"
-    },
-    {
-      "id": 12,
-      "firstName": "Emily",
-      "lastName": "Hernandez"
-    },
-    {
-      "id": 13,
-      "firstName": "Elizabeth",
-      "lastName": "Lopez"
-    },
-    {
-      "id": 14,
-      "firstName": "Sofia",
-      "lastName": "Gonzalez"
-    },
-    {
-      "id": 15,
-      "firstName": "Ella",
-      "lastName": "Perez"
-    },
-    {
-      "id": 16,
-      "firstName": "Scarlett",
-      "lastName": "Taylor"
-    },
-    {
-      "id": 17,
-      "firstName": "Grace",
-      "lastName": "Moore"
-    },
-    {
-      "id": 18,
-      "firstName": "Chloe",
-      "lastName": "Jackson"
-    },
-    {
-      "id": 19,
-      "firstName": "Victoria",
-      "lastName": "Martin"
-    },
-    {
-      "id": 20,
-      "firstName": "Riley",
-      "lastName": "Thompson"
-    },
-    {
-      "id": 21,
-      "firstName": "Aria",
-      "lastName": "White"
-    },
-    {
-      "id": 22,
-      "firstName": "Luna",
-      "lastName": "Harris"
-    },
-    {
-      "id": 23,
-      "firstName": "Lily",
-      "lastName": "Nelson"
-    },
-    {
-      "id": 24,
-      "firstName": "Zoe",
-      "lastName": "Lewis"
-    },
-    {
-      "id": 25,
-      "firstName": "Hannah",
-      "lastName": "Clark"
-    }
+{
+  "names": [
+    { "id": 1, "name": "Alayna Good" },
+    { "id": 2, "name": "Emily Shoffner" },
+    { "id": 3, "name": "Avery Culp" },
+    { "id": 4, "name": "Caiya Burks" },
+    { "id": 5, "name": "DeLaney Woerner" },
+    { "id": 6, "name": "Julia Sedora" },
+    { "id": 7, "name": "Reagan Smith" },
+    { "id": 8, "name": "Nataley Topolski" },
+    { "id": 9, "name": "Hannah Royer" },
+    { "id": 10, "name": "Paisley Pomraning" },
+    { "id": 11, "name": "Mackenzie Hess" },
+    { "id": 12, "name": "Maddie Pollard" },
+    { "id": 13, "name": "Clara Bradshaw" },
+    { "id": 14, "name": "Olivia Bowersox" },
+    { "id": 15, "name": "Taylor Crowe" },
+    { "id": 16, "name": "Payton Urey" },
+    { "id": 17, "name": "Ava Ramos" },
+    { "id": 18, "name": "Haley Allen" },
+    { "id": 19, "name": "Maddie Young" },
+    { "id": 20, "name": "Andrea Orr" },
+    { "id": 21, "name": "Chloe Griffin" },
+    { "id": 22, "name": "Kat Smeltzer" },
+    { "id": 23, "name": "Bella Cappello" },
+    { "id": 24, "name": "Izzy Greenawalt" },
+    { "id": 25, "name": "Emma Greenly" },
+    { "id": 26, "name": "Sydney Nace" },
+    { "id": 27, "name": "Ella Honaker" },
+    { "id": 28, "name": "Dani Cadwallader" },
+    { "id": 29, "name": "Lily Ramos" },
+    { "id": 30, "name": "Peyton Snyder" }
   ]
-  
+}
