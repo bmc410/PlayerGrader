@@ -17,6 +17,16 @@
   background-color: gold;
 }
 
+.p-button {
+  background: none !important;
+  border: none !important;
+  color: inherit !important;
+  /* Add any other properties you want to reset */
+}
+
+.p-button-active {
+  outline: none !important;
+}
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
@@ -26,6 +36,10 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+}
+
+*:focus {
+  box-shadow: none !important;
 }
 
 .App-link {

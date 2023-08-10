@@ -1,9 +1,11 @@
 // PlayerState.tsx
-import { atom } from 'jotai';
+// import { atom } from 'jotai';
 
 export interface Player {
   id: number;
   name: string;
 }
 
-export const playerAtom = atom<Player[]>([]);
+// export const playersAtom = atom<Player[]>([]);
+
+// export const playerAtom = atom<Player>(atom);

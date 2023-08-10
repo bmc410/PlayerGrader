@@ -1,36 +1,39 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './App.css';
-import { atom, useAtom, useSetAtom } from 'jotai';
-import { playerAtom, Player } from './models/playerstate';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { InputText } from 'primereact/inputtext';
 import Slider, { SliderThumb, SliderValueLabelProps } from '@mui/material/Slider';
-import { styled } from '@mui/material/styles';
 import Typography from '@mui/material/Typography';
-import Tooltip from '@mui/material/Tooltip';
-import Box from '@mui/material/Box';
 import { SlideMenu } from 'primereact/slidemenu';
 import { Button } from 'primereact/button';
 import { Menu } from 'primereact/menu';
+import { useStoreActions, useStoreState } from 'easy-peasy';
+import store, { StoreModel } from './models/store';
+
 
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
 import 'swiper/css/navigation';
-import { activeSlideAtom, activeSwipeAtom } from './models/slidestate';
 
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { categoryAtom } from './models/categories';
+import { Player } from './models/playerstate';
 
 
 function App() {
-  const [players, setPlayers] = useAtom(playerAtom);
-  const [categories, setCategories] = useAtom(categoryAtom);
-  const [activeSlideIndex, setActiveSlideIndex] = useAtom(activeSlideAtom); // Use the atom
-  const [activeSwipeIndex, setActiveSwipeIndex] = useAtom(activeSwipeAtom); // Use the atom
+
+  const handleAddPerson = (players: Player[]) => {
+    //const newPerson = { id: Math.random(), name: 'New Person', age: 0 };
+    setPlayers(players);
+  };
+
+  const players = useStoreState<StoreModel>(state => state.players)
+  //const setPlayers = useStoreActions<StoreModel>(actions => actions.setPlayers);
+  //const players = useStoreState(state => state.players.items); // Assuming `items` is the array property in your store model
+const setPlayers = useStoreActions(actions => actions..setPlayers); // Assuming `setPlayers` is the action to set players in your store model
+
 
   const menu = useRef<Menu>(null);
   let items = [
@@ -89,7 +92,8 @@ function App() {
       try {
         const response = await fetch('players.json'); // Update the path if needed
         const data = await response.json();
-        setPlayers(data.names);
+        if(data)
+        handleAddPerson(data.names);
       } catch (error) {
         console.error('Error fetching player data:', error);
       }
@@ -98,7 +102,7 @@ function App() {
       try {
         const response = await fetch('categories.json'); // Update the path if needed
         const data = await response.json();
-        setCategories(data.categories);
+        //setCategories(data.categories);
       } catch (error) {
         console.error('Error fetching player data:', error);
       }
@@ -109,83 +113,60 @@ function App() {
   }, []);
 
   const handleSwiperSlideChange = (swiper: any) => {
-    setActiveSlideIndex(swiper.activeIndex)
-    let player = getPlayerById(swiper.activeIndex + 1)
-    console.log(JSON.stringify(player)); // Update active slide index
+    //setActiveSlideIndex(swiper.activeIndex)
+    //let player = getPlayerById(swiper.activeIndex + 1)
+    //console.log(JSON.stringify(player)); // Update active slide index
   };
 
-  const addPlayer = (newPlayer: Player) => {
-    setPlayers(prevPlayers => [...prevPlayers, newPlayer]);
-  };
+  // const addPlayer = (newPlayer: Player) => {
+  //   setPlayers(prevPlayers => [...prevPlayers, newPlayer]);
+  // };
 
-  const getPlayerById = (id: number): Player | undefined => {
-    return players.find(player => player.id === id);
-  };
+  // const getPlayerById = (id: number): Player | undefined => {
+  //   return players.find(player => player.id === id);
+  // };
 
   return (
     <div>
 
-      <div className='grid'>
-        <div className='col'>
+      <div  style={{backgroundColor:'gold'}} className='grid  grid-nogutter flex align-items-center'>
+        <div className='col-fixed' style={{width: '2rem'}}>
           <Menu model={items} popup ref={menu} />
-          <Button style={{ backgroundColor: 'gold', border: 0 }} label="Show" icon="pi pi-bars" onClick={(event) => menu?.current?.toggle(event)} />
+          <Button style={{ backgroundColor: 'gold', border: 0, color: 'black', outline: 'none' }} icon="pi pi-bars" onClick={(event) => menu?.current?.toggle(event)} />
         </div>
-        <div  className='col'>
-        <Swiper
-          loop={true}
-          onSlideChange={handleSwiperSlideChange}
-        >
-          {players.map((player, index) => (
-            <SwiperSlide key={player.id} onClick={() => console.log(index)}>
-              <div style={{ paddingLeft: '20px' }} className="swiper-slide-content">
-                <p>{player.name}</p>
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
-      </div>
+        <div className='col-11'>
+          <Swiper
+            loop={true}
+            onSlideChange={handleSwiperSlideChange}
+          >
+            {players.map((player: Player, index: number) => (
+              <SwiperSlide key={player.id} onClick={() => console.log(index)}>
+                <div style={{ paddingLeft: '20px' }} className="swiper-slide-content">
+                  <p>{player.name}</p>
+                </div>
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+      </div >
 
-      {
-    categories.map((category, index) => (
-      <div style={{ marginTop: '20px', padding: '20px' }}>
-        <Typography gutterBottom>{category.name}</Typography>
-        <Slider
-          defaultValue={5}
-          step={0.5}
-          min={0}
-          max={10}
-          valueLabelDisplay="auto"
-          marks={marks}
-        />
-      </div>
-    ))
-  }
-
-
-  {/* <div style={{ marginTop: '20px', padding: '20px' }}>
-        <Typography gutterBottom>Passing</Typography>
-        <Slider
-          defaultValue={5}
-          step={0.5}
-          min={0}
-          max={10}
-          valueLabelDisplay="auto"
-          marks={marks}
-        />
-      </div>
-      <div style={{ marginTop: '20px', padding: '20px' }}>
-        <Typography gutterBottom>Hitting</Typography>
-        <Slider
-          defaultValue={5}
-          step={0.5}
-          min={0}
-          max={10}
-          valueLabelDisplay="auto"
-          marks={marks}
-        />
+      {/* <div>
+        {categories.map((category, index) => (
+          <div style={{ marginTop: '20px', padding: '20px' }}>
+            <Typography gutterBottom>{category.name}</Typography>
+            <Slider
+              defaultValue={5}
+              step={0.5}
+              min={0}
+              max={10}
+              valueLabelDisplay="auto"
+              marks={marks}
+            />
+          </div>
+        ))}      
       </div> */}
 
-    </div > </div >
+    </div >
 
   );
 }

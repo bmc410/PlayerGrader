@@ -7,6 +7,9 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
+import { Player } from './models/playerstate'
+
+
 //theme
 import "primereact/resources/themes/lara-light-indigo/theme.css";     
     
@@ -14,14 +17,24 @@ import "primereact/resources/themes/lara-light-indigo/theme.css";
 import "primereact/resources/primereact.min.css"; 
 import 'primeicons/primeicons.css';                                 // icons
 import 'primeflex/primeflex.css';     
+import { StoreProvider, createStore } from 'easy-peasy';
+
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
 );
+
+
+
+const store = createStore({
+  players: [],
+  categories: []
+});
+
 root.render(
-  <React.StrictMode>
+  <StoreProvider store={store}>
     <App />
-  </React.StrictMode>
+  </StoreProvider>
 );
 
 // If you want to start measuring performance in your app, pass a function

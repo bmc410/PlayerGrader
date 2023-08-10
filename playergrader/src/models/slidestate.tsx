@@ -1,14 +1,14 @@
 // PlayerState.tsx
-import { PrimitiveAtom, atom } from 'jotai';
+//import { PrimitiveAtom, atom } from 'jotai';
 
 export interface SwipeState {
-  index: number;
+  index?: number;
 }
 
-export const activeSwipeAtom = atom<PrimitiveAtom<SwipeState>[]>([])
+//export const activeSwipeAtom = atom<PrimitiveAtom<SwipeState>[]>([])
 
 export interface SlideState {
-  index: number;
+  index?: number;
 }
 
-export const activeSlideAtom = atom<PrimitiveAtom<SlideState>[]>([])
+//export const activeSlideAtom = atom<PrimitiveAtom<SlideState>[]>([])
