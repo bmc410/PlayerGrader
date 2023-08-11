@@ -96,3 +96,50 @@ export const fetchAndStorePlayers = async () => {
     console.error('Error fetching and storing players:', error);
   }
 };
+
+export const getPlayerById = async (playerId: number): Promise<Player | undefined> => {
+  try {
+    await db.open();
+    const player = await db.players.get(playerId);
+    await db.close();
+    return player;
+  } catch (error) {
+    console.error('Error fetching player by ID:', error);
+    return undefined;
+  }
+};
+
+export const clearPlayerStatsTable = async (): Promise<void> => {
+  try {
+    await db.open();
+    await db.playerStats.clear();
+    await db.close();
+  } catch (error) {
+    console.error('Error clearing playerStats table:', error);
+  }
+};
+
+export const insertOrUpdatePlayerStat = async (
+  playerStat: PlayerStat
+): Promise<void> => {
+  try {
+    await db.open();
+    
+    const existingRecord = await db.playerStats
+      .where({
+        playerid: playerStat.playerid,
+        categoryid: playerStat.categoryid,
+      })
+      .first();
+    
+    if (existingRecord) {
+      await db.playerStats.update(existingRecord.id!, playerStat);
+    } else {
+      await db.playerStats.add(playerStat);
+    }
+    
+    await db.close();
+  } catch (error) {
+    console.error('Error inserting or updating playerStat:', error);
+  }
+};

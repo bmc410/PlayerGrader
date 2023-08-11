@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { openDB } from 'idb';
-import { PlayerStat, Category, Player } from './models/interfaces'; // Adjust the path to your interfaces.ts file
-import { getAllCategories, getAllPlayers } from './models/indexeddb';
+import { PlayerStat, Category, Player } from '../models/interfaces'; // Adjust the path to your interfaces.ts file
 
 interface PlayerStatsTableProps {
   categories: Category[];
@@ -23,12 +22,12 @@ function PlayerStatsTable() {
       setPlayerStats(stats);
 
       async function fetchCategories() {
-        const fetchedCategories = await getAllCategories();
-        setCategories(fetchedCategories);
+        // const fetchedCategories = await getAllCategories();
+        // setCategories(fetchedCategories);
       }
       async function fetchPlayers() {
-        const fetchedPlayers = await getAllPlayers();
-        setPlayers(fetchedPlayers);
+        // const fetchedPlayers = await getAllPlayers();
+        // setPlayers(fetchedPlayers);
       }
 
       fetchPlayers();

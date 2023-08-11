@@ -1,5 +1,5 @@
-import React, { useEffect, useRef, useState } from 'react';
-import './App.css';
+import React, { createRef, useEffect, useRef, useState } from 'react';
+import '../App.css'
 import { Swiper, SwiperSlide } from 'swiper/react';
 import Slider, { SliderThumb, SliderValueLabelProps } from '@mui/material/Slider';
 import Typography from '@mui/material/Typography';
@@ -15,7 +15,7 @@ import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
-import { Category, Player, PlayerStat } from './models/interfaces';
+import { Category, Player, PlayerStat, SlideState } from '../models/interfaces';
 import { Routes, Route } from 'react-router-dom';
 import PlayerStatsTable from './report';
 import {
@@ -27,26 +27,23 @@ import {
   getPlayerStatsByPlayerAndCategory,
   getAllPlayers,
   fetchAndStoreCategories,
-  fetchAndStorePlayers
-} from './models/dexiedb'
+  fetchAndStorePlayers,
+  getPlayerById,
+  insertOrUpdatePlayerStat
+} from '../models/dexiedb'
 
 function Grader() {
   const [players, setPlayers] = useState<Player[]>([]);
   const [categories, setCategories] = useState<Category[]>([]);
   const [activePlayer, setActivePlayer] = useState<Player|undefined>(); // Initial value
-  let timeout;
-  const handleSliderChange = (id:any, newValue:any) => {
-    let ps: PlayerStat = {
-      playerid: activePlayer?.id,
-      categoryid: id+1,
-      value: newValue,
-      name: activePlayer?.name
-    }
-    timeout = setTimeout(() => {
-      //insertOrUpdatePlayerStat(ps)
-      }, 1000); 
-  };
+  //const [sliderValues, setSliderValue] = useState<number | Number[] | undefined>([]); // Initial value
+  const [sliderValues, setSliderValues] = useState(Array(8).fill(0));
 
+
+  const sv: number[] = []
+
+
+  let timeout;
   const menu = useRef<Menu>(null);
   let items = [
     { label: 'New', icon: 'pi pi-fw pi-plus' },
@@ -55,8 +52,30 @@ function Grader() {
     } }
   ];
 
+  function handleSliderChange(id:any, newValue:any) {
+    const newSliderValues = [...sliderValues];
+    newSliderValues[id] = newValue; 
+    setSliderValues(newSliderValues);
+    let ps: PlayerStat = {
+      playerid: activePlayer?.id,
+      categoryid: id+1,
+      value: newValue,
+      name: activePlayer?.name
+    }
+    timeout = setTimeout(() => {
+      insertOrUpdatePlayerStat(ps)
+      }, 1000); 
+  };
+
   function deleteDB() {
-    //clearPlayerStats()
+   
+    //clearPlayerTableStats()
+  }
+
+  function clearSliders() {
+    for (let index = 0; index < 10; index++) {
+      sliderValues[index] = 0
+    }
   }
 
   const marks = [
@@ -106,6 +125,7 @@ function Grader() {
     },];
 
   useEffect(() => {
+  
     getdata()
   
   }, []);
@@ -118,6 +138,7 @@ function Grader() {
           setCategories(categories);
           getAllPlayers().then(players => {
             setPlayers(players);
+            setActivePlayer(players[0])
           })
         })
      
@@ -125,9 +146,10 @@ function Grader() {
 
   const handleSwiperSlideChange = (swiper: any) => {
     //setActiveSlideIndex(swiper.activeIndex)
-    // let player = getPlayerById(swiper.activeIndex + 1).then (player => {
-    //   setActivePlayer(player)
-    // })
+    clearSliders()
+    let player = getPlayerById(swiper.activeIndex + 1).then (player => {
+      setActivePlayer(player)
+    })
   };
 
   function getSliderValue(index:any) {
@@ -170,7 +192,7 @@ function Grader() {
           <div style={{ marginTop: '20px', padding: '20px' }}>
             <Typography gutterBottom>{category.name}</Typography>
             <Slider
-              id={index.toString()}
+              id={'slider_' + index.toString()}
               onChange={(event, newValue) => handleSliderChange(index, newValue)}
               //defaultValue={getSliderValue({index})}
               step={0.5}
@@ -178,6 +200,7 @@ function Grader() {
               max={10}
               valueLabelDisplay="auto"
               marks={marks}
+              value={sliderValues[index]}
             />
           </div>
         ))}      
@@ -188,3 +211,7 @@ function Grader() {
 }
 
 export default Grader;
+function clearPlayerTableStats() {
+  throw new Error('Function not implemented.');
+}
+

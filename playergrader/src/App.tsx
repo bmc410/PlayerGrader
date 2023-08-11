@@ -6,7 +6,6 @@ import Typography from '@mui/material/Typography';
 import { SlideMenu } from 'primereact/slidemenu';
 import { Button } from 'primereact/button';
 import { Menu } from 'primereact/menu';
-import { clearPlayerStats, fetchAndStoreCategories, fetchAndStorePlayers, getPlayerById, insertOrUpdatePlayerStat } from './models/indexeddb'; // Adjust the path to your indexedDB.ts file
 // Import Swiper styles
 import 'swiper/css';
 import 'swiper/css/pagination';
@@ -18,8 +17,8 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { Category, Player, PlayerStat } from './models/interfaces';
 import { Routes, Route } from 'react-router-dom';
-import PlayerStatsTable from './report';
-import Grader from './grader';
+import PlayerStatsTable from './components/report';
+import Grader from './components/grader';
 
 
 function App() {
@@ -33,14 +32,13 @@ function App() {
   ];
 
   function deleteDB() {
-    clearPlayerStats()
+   
   }
 
   
 
   useEffect(() => {
-    fetchAndStorePlayers()
-    fetchAndStoreCategories()
+   
    }, []);
 
    return (

@@ -4,12 +4,14 @@ export interface Player {
   }
 
   export interface SwipeState {
+    id?: string;
     index?: number;
   }
   
   //export const activeSwipeAtom = atom<PrimitiveAtom<SwipeState>[]>([])
   
   export interface SlideState {
+    id?: string;
     index?: number;
   }
 
