@@ -7,8 +7,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 import 'swiper/css/scrollbar';
-import { Player } from './models/playerstate'
-
+import { Player } from './models/interfaces'
+import { BrowserRouter } from "react-router-dom";
 
 //theme
 import "primereact/resources/themes/lara-light-indigo/theme.css";     
@@ -32,9 +32,11 @@ const store = createStore({
 });
 
 root.render(
-  <StoreProvider store={store}>
-    <App />
-  </StoreProvider>
+  <BrowserRouter>
+    <StoreProvider store={store}>
+      <App />
+    </StoreProvider>
+  </BrowserRouter>
 );
 
 // If you want to start measuring performance in your app, pass a function
