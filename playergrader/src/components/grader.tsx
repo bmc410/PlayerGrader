@@ -16,7 +16,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import { Category, Player, PlayerStat, SlideState } from '../models/interfaces';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useNavigate } from 'react-router-dom';
 import PlayerStatsTable from './report';
 import {
   storePlayer,
@@ -24,12 +24,13 @@ import {
   updateSlideState,
   storePlayerStat,
   getAllCategories,
-  getPlayerStatsByPlayerAndCategory,
   getAllPlayers,
   fetchAndStoreCategories,
   fetchAndStorePlayers,
   getPlayerById,
-  insertOrUpdatePlayerStat
+  insertOrUpdatePlayerStat,
+  getPlayerStatsByPlayerId,
+  clearAllPlayerStats
 } from '../models/dexiedb'
 
 function Grader() {
@@ -45,8 +46,11 @@ function Grader() {
 
   let timeout;
   const menu = useRef<Menu>(null);
+  const navigate = useNavigate();
   let items = [
-    { label: 'New', icon: 'pi pi-fw pi-plus' },
+    { label: 'Report', icon: 'pi pi-fw pi-chart-line', command: () => {
+      navigate('/report');
+    } },
     { label: 'Delete', icon: 'pi pi-fw pi-trash', command: () => {
         deleteDB()
     } }
@@ -64,12 +68,12 @@ function Grader() {
     }
     timeout = setTimeout(() => {
       insertOrUpdatePlayerStat(ps)
-      }, 1000); 
+      }, 3000); 
   };
 
   function deleteDB() {
    
-    //clearPlayerTableStats()
+    clearAllPlayerStats();
   }
 
   function clearSliders() {
@@ -131,25 +135,36 @@ function Grader() {
   }, []);
 
  function getdata() {
-    fetchAndStoreCategories()
-    fetchAndStorePlayers()
+   
 
         getAllCategories().then(categories => {
           setCategories(categories);
           getAllPlayers().then(players => {
             setPlayers(players);
             setActivePlayer(players[0])
+            resetSliderValues(players[0].id!)
           })
         })
      
   }
 
+  function resetSliderValues(playerId: number) {
+   //setActiveSlideIndex(swiper.activeIndex)
+   clearSliders()
+   let player = getPlayerById(playerId).then (player => {
+     setActivePlayer(player)
+     getPlayerStatsByPlayerId(player?.id!).then(stats => {
+       const newSliderValues = [...sliderValues];
+       stats.forEach(stat => {
+         newSliderValues[stat.categoryid! - 1] = stat.value; 
+       })
+       setSliderValues(newSliderValues); 
+     })
+   })
+  }
+
   const handleSwiperSlideChange = (swiper: any) => {
-    //setActiveSlideIndex(swiper.activeIndex)
-    clearSliders()
-    let player = getPlayerById(swiper.activeIndex + 1).then (player => {
-      setActivePlayer(player)
-    })
+    resetSliderValues(swiper.activeIndex + 1)
   };
 
   function getSliderValue(index:any) {
@@ -211,7 +226,5 @@ function Grader() {
 }
 
 export default Grader;
-function clearPlayerTableStats() {
-  throw new Error('Function not implemented.');
-}
+
 

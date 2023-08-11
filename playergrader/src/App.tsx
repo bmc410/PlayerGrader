@@ -19,26 +19,16 @@ import { Category, Player, PlayerStat } from './models/interfaces';
 import { Routes, Route } from 'react-router-dom';
 import PlayerStatsTable from './components/report';
 import Grader from './components/grader';
+import { fetchAndStoreCategories, fetchAndStorePlayers } from './models/dexiedb';
 
 
 function App() {
  
   const menu = useRef<Menu>(null);
-  let items = [
-    { label: 'New', icon: 'pi pi-fw pi-plus' },
-    { label: 'Delete', icon: 'pi pi-fw pi-trash', command: () => {
-        deleteDB()
-    } }
-  ];
-
-  function deleteDB() {
-   
-  }
-
-  
-
+ 
   useEffect(() => {
-   
+    fetchAndStoreCategories()
+    fetchAndStorePlayers()
    }, []);
 
    return (

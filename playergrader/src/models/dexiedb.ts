@@ -47,52 +47,73 @@ export const storePlayerStat = async (playerStat: PlayerStat): Promise<void> => 
 };
 
 export const getAllCategories = async (): Promise<Category[]> => {
-  return await db.categories.toArray();
+  try {
+    await db.open();
+    const categories = await db.categories.toArray()
+    await db.close();
+    return categories;
+  } catch (error) {
+    console.error('Error fetching player stats by player ID:', error);
+    return [];
+  }
 };
 
 export const getAllPlayers = async (): Promise<Player[]> => {
-  return await db.players.toArray();
+  try {
+    await db.open();
+    const players = await db.players.toArray()
+    await db.close();
+    return players;
+  } catch (error) {
+    console.error('Error fetching player stats by player ID:', error);
+    return [];
+  }
 };
 
-export const getPlayerStatsByPlayerAndCategory = async (
-  playerId: number,
-  categoryId: number
-): Promise<PlayerStat | undefined> => {
-  return await db.playerStats
-    .where({ playerid: playerId, categoryid: categoryId })
-    .first();
+export const getPlayerStatsByPlayerId = async (playerId: number): Promise<PlayerStat[]> => {
+  try {
+    await db.open();
+    const playerStats = await db.playerStats.where('playerid').equals(playerId).toArray();
+    await db.close();
+    return playerStats;
+  } catch (error) {
+    console.error('Error fetching player stats by player ID:', error);
+    return [];
+  }
 };
 
-export  function fetchAndStoreCategories() {
+
+export function fetchAndStoreCategories() {
   try {
     db.categories.count().then(async x => {
-      if(x == 0) {
-        const response = await fetch('categories.json');
+      if (x == 0) {
+        //const response = await fetch('categories.json');
+        const response = await fetch('https://jsonfiles410.blob.core.windows.net/files/categories.json')
         const data = await response.json();
         const categories = data.categories;
         db.categories.bulkAdd(categories);
       }
     })
 
-   
-   
 
-   } catch (error) {
+
+
+  } catch (error) {
     console.error('Error fetching and storing category:', error);
   }
 };
 
 export const fetchAndStorePlayers = async () => {
   try {
-    if(await db.players.count() == 0) {
+    if (await db.players.count() == 0) {
       const response = await fetch('players.json');
       const data = await response.json();
       const players = data.names;
       db.players.bulkAdd(players);
     }
-   
 
-   } catch (error) {
+
+  } catch (error) {
     console.error('Error fetching and storing players:', error);
   }
 };
@@ -124,22 +145,45 @@ export const insertOrUpdatePlayerStat = async (
 ): Promise<void> => {
   try {
     await db.open();
-    
+
     const existingRecord = await db.playerStats
       .where({
         playerid: playerStat.playerid,
         categoryid: playerStat.categoryid,
       })
       .first();
-    
+
     if (existingRecord) {
       await db.playerStats.update(existingRecord.id!, playerStat);
     } else {
       await db.playerStats.add(playerStat);
     }
-    
+
     await db.close();
   } catch (error) {
     console.error('Error inserting or updating playerStat:', error);
   }
 };
+
+export const getAllPlayerStats = async (): Promise<PlayerStat[]> => {
+  try {
+    await db.open();
+    const allPlayerStats = await db.playerStats.toArray();
+    await db.close();
+    return allPlayerStats;
+  } catch (error) {
+    console.error('Error fetching all player stats:', error);
+    return [];
+  }
+};
+
+export const clearAllPlayerStats = async (): Promise<void> => {
+  try {
+    await db.open();
+    await db.playerStats.clear();
+    await db.close();
+  } catch (error) {
+    console.error('Error clearing all player stats:', error);
+  }
+};
+
