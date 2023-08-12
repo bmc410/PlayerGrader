@@ -87,8 +87,8 @@ export function fetchAndStoreCategories() {
   try {
     db.categories.count().then(async x => {
       if (x == 0) {
-        //const response = await fetch('categories.json');
-        const response = await fetch('https://jsonfiles410.blob.core.windows.net/files/categories.json')
+        const response = await fetch('categories.json');
+        //const response = await fetch('https://jsonfiles410.blob.core.windows.net/files/categories.json')
         const data = await response.json();
         const categories = data.categories;
         db.categories.bulkAdd(categories);

@@ -36,6 +36,8 @@ function App() {
       <Routes>
           <Route path="report" element={<PlayerStatsTable />} />
           <Route path="grader" element={<Grader />} />
+          <Route path="*" element={<Grader />} />
+
       </Routes>
 
     </div >
